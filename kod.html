@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprawdzanie Połączeń</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.1/dist/tailwind.min.css">
+    <script>
+        async function importujNazwiska() {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert('Wybierz plik tekstowy.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const text = await file.text();
+            localStorage.setItem('nazwiska', text);
+            alert('Nazwiska zaimportowane.');
+        }
+
+        function sprawdzNazwisko() {
+            const nazwiska = localStorage.getItem('nazwiska')?.split('\n').map(n => n.trim()) || [];
+            const szukane = document.getElementById('searchInput').value.trim();
+
+            if (nazwiska.includes(szukane)) {
+                alert(`Dzwoniłeś do: ${szukane}`);
+            } else {
+                alert(`Nie dzwoniłeś do: ${szukane}`);
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+        <h2 class="text-2xl font-bold mb-4">Sprawdzanie Połączeń</h2>
+        <input type="file" id="fileInput" class="mb-4 w-full">
+        <button onclick="importujNazwiska()" class="bg-blue-500 text-white px-4 py-2 rounded w-full">Importuj nazwiska</button>
+        <hr class="my-4">
+        <input type="text" id="searchInput" class="w-full p-2 border rounded mb-2" placeholder="Wpisz imię i nazwisko">
+        <button onclick="sprawdzNazwisko()" class="bg-green-500 text-white px-4 py-2 rounded w-full">Sprawdź nazwisko</button>
+    </div>
+</body>
+</html>
